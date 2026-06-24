@@ -1,0 +1,49 @@
+{
+  "generator": "kakaku/viz/build_viz_data.py",
+  "intent": "buyer-transparency+supply-resilience",
+  "cards": [
+    {
+      "productId": "jan_4901777300443",
+      "name": "Stainless Vacuum Bottle 500ml",
+      "offers": [
+        {
+          "merchantId": "a_com",
+          "region": "jp",
+          "landed": 3200,
+          "availability": "in-stock"
+        },
+        {
+          "merchantId": "c_com",
+          "region": "jp",
+          "landed": 3500,
+          "availability": "backorder"
+        },
+        {
+          "merchantId": "b_com",
+          "region": "us",
+          "landed": 3900,
+          "availability": "in-stock"
+        }
+      ],
+      "cheapestMerchant": "a_com",
+      "minLanded": 3200,
+      "maxLanded": 3900,
+      "spread": 700,
+      "spreadFraction": 0.2188,
+      "notable": true,
+      "byRegion": {
+        "jp": {
+          "minLanded": 3200,
+          "merchantId": "a_com"
+        },
+        "us": {
+          "minLanded": 3900,
+          "merchantId": "b_com"
+        }
+      },
+      "supplyDemandIndex": -0.0333,
+      "reading": "balanced",
+      "intent": "buyer-transparency+supply-resilience"
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+;; kakaku 価格 — kotoba EAVT schema
+;; ADR-2605091200 + 20-actors/kakaku/CLAUDE.md data model.
+;; Canonical product, merchant registry, current offer, append-only price history,
+;; and DERIVED price-difference / supply-demand OBSERVATIONS. All state is kotoba
+;; Datoms (no RW/SQL; G6). Price is NOT a product attribute — it lives on an offer
+;; at a merchant at a point in time, and every change appends a :ph/* observation.
+
+[;; ───────────────────────────── :product/* — canonical product ─────────────────────────────
+ {:db/ident :product/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "stable product key (jan_… / gtin_… / mpn_… / brand-model / title-hash)"}
+ {:db/ident :product/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :product/brand
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :product/model
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :product/jan
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "JAN/EAN-13"}
+ {:db/ident :product/gtin
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "GS1 GTIN-14"}
+ {:db/ident :product/category
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "UNSPSC commodity code (reuses the organism vocabulary)"}
+
+ ;; ───────────────────────────── :merchant/* — EC site / seller ─────────────────────────────
+ {:db/ident :merchant/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "normalized apex domain, e.g. yodobashi_com"}
+ {:db/ident :merchant/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :merchant/domain
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :merchant/region
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc ":jp | :us | :eu | … — used by cross-region arbitrage spread"}
+ {:db/ident :merchant/reputation-score
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "0..1 trust weight for best-overall ranking (NOT paid placement; G3)"}
+ {:db/ident :merchant/status
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc ":active | :suspended — non-active ⇒ offers flagged suspicious"}
+
+ ;; ───────────────────────────── :offer/* — current merchant offer ─────────────────────────────
+ {:db/ident :offer/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "merchant-scoped offer key (native id / sku / url-hash)"}
+ {:db/ident :offer/product
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :offer/merchant
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :offer/price
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "sticker price in minor currency units"}
+ {:db/ident :offer/shipping-fee
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :offer/total-price
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "landed price = price + shipping-fee; the cross-site comparison basis"}
+ {:db/ident :offer/currency
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :offer/availability
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc ":in-stock | :preorder | :backorder | :out-of-stock | :unknown"}
+ {:db/ident :offer/delivery-eta-days
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :offer/product-url
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "affiliate-stripped source URL (G3)"}
+ {:db/ident :offer/observed-at
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+
+ ;; ───────────────────────────── :ph/* — append-only price history ─────────────────────────────
+ {:db/ident :ph/offer
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :ph/product
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :ph/merchant
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :ph/total-price
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :ph/availability
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :ph/observed-at
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "ISO timestamp; the as-of axis for supply/demand velocity"}
+
+ ;; ───────────────────────────── :spread/* — derived arbitrage observation (G2) ─────────────────────────────
+ ;; A buyer-transparency + supply-resilience reading, NOT a trading signal.
+ {:db/ident :spread/product
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :spread/min-landed
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :spread/max-landed
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :spread/fraction
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one
+  :db/doc "(max-min)/min landed; >= 0.15 ⇒ notable"}
+ {:db/ident :spread/observed-at
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}
+
+ ;; ───────────────────────────── :sd/* — derived supply/demand index (G2) ─────────────────────────────
+ ;; Present-state reading in [-1,1]; +1 scarcity, -1 glut. NOT a forecast (mitooshi owns futures).
+ {:db/ident :sd/product
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :sd/index
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :sd/in-stock-ratio
+  :db/valueType :db.type/double
+  :db/cardinality :db.cardinality/one}
+ {:db/ident :sd/reading
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc ":scarcity | :balanced | :glut"}
+ {:db/ident :sd/observed-at
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one}]

@@ -1,0 +1,14 @@
+{
+  "@context" : [ "https://www.w3.org/ns/did/v1", "https://w3id.org/security/suites/ed25519-2020/v1" ],
+  "id" : "did:web:etzhayyim.github.io:com-etzhayyim-kakaku",
+  "alsoKnownAs" : [ "at://kakaku.etzhayyim.com", "https://github.com/etzhayyim/com-etzhayyim-kakaku", "rad:bafkreib5keoguuln3bstarkcytk4bvrevd35jtpkiysypltrp5w2kpx7xm" ],
+  "service" : [ {
+    "id" : "did:web:etzhayyim.github.io:com-etzhayyim-kakaku#atproto_pds",
+    "type" : "AtprotoPersonalDataServer",
+    "serviceEndpoint" : "https://pds.etzhayyim.com"
+  }, {
+    "id" : "did:web:etzhayyim.github.io:com-etzhayyim-kakaku#aozora",
+    "type" : "AozoraAppView",
+    "serviceEndpoint" : "https://aozora.app"
+  } ]
+}

@@ -1,0 +1,54 @@
+;; kakaku 価格 — representative seed (G10: illustrative, NOT live retailer data)
+;; ADR-2605091200. One canonical product observed across three merchants in two
+;; regions, plus a short price-history window — enough to exercise rank / arbitrage
+;; / supply-demand / intel / social end-to-end. Live ingest is G11-gated.
+
+[;; canonical product
+ {:product/id "jan_4901777300443"
+  :product/name "Stainless Vacuum Bottle 500ml"
+  :product/brand "ExampleBrand"
+  :product/model "VB-500"
+  :product/jan "4901777300443"
+  :product/category "52151700"}
+
+ ;; merchants (two regions)
+ {:merchant/id "a_com"
+  :merchant/name "A Store"
+  :merchant/domain "a.example"
+  :merchant/region :jp
+  :merchant/reputation-score 0.9
+  :merchant/status :active}
+ {:merchant/id "b_com"
+  :merchant/name "B Mart"
+  :merchant/domain "b.example"
+  :merchant/region :us
+  :merchant/reputation-score 0.6
+  :merchant/status :active}
+ {:merchant/id "c_com"
+  :merchant/name "C Shop"
+  :merchant/domain "c.example"
+  :merchant/region :jp
+  :merchant/reputation-score 0.75
+  :merchant/status :active}
+
+ ;; current offers (landed = price + shipping-fee)
+ {:offer/id "a_com:4549995501234"
+  :offer/price 3000 :offer/shipping-fee 200 :offer/total-price 3200
+  :offer/currency "JPY" :offer/availability :in-stock
+  :offer/delivery-eta-days 2 :offer/product-url "https://a.example/p"
+  :offer/observed-at "2026-06-07T00:00:00Z"}
+ {:offer/id "b_com:B0EXAMPLE"
+  :offer/price 2700 :offer/shipping-fee 1200 :offer/total-price 3900
+  :offer/currency "JPY" :offer/availability :in-stock
+  :offer/delivery-eta-days 9 :offer/product-url "https://b.example/p"
+  :offer/observed-at "2026-06-07T00:00:00Z"}
+ {:offer/id "c_com:SKU-9001"
+  :offer/price 3500 :offer/shipping-fee 0 :offer/total-price 3500
+  :offer/currency "JPY" :offer/availability :backorder
+  :offer/delivery-eta-days 21 :offer/product-url "https://c.example/p"
+  :offer/observed-at "2026-06-07T00:00:00Z"}
+
+ ;; price history window (as-of axis for supply/demand velocity)
+ {:ph/total-price 3000 :ph/availability :in-stock :ph/observed-at "2026-06-01T00:00:00Z"}
+ {:ph/total-price 3100 :ph/availability :in-stock :ph/observed-at "2026-06-04T00:00:00Z"}
+ {:ph/total-price 3200 :ph/availability :in-stock :ph/observed-at "2026-06-07T00:00:00Z"}]

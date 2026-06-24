@@ -1,0 +1,13 @@
+;; kotoba.app.edn — actor:kakaku KOTOBA Mesh application manifest (observatory on-kse, ADR-2606230001 §4).
+;; Deploy: kotoba app deploy kotoba.app.edn  (compiles methods/mesh.clj → CID → control datoms)
+{:kotoba.app/name    "kakaku"
+ :kotoba.app/version "0.1.0"
+ :kotoba.app/components
+ [{:name     "kakaku"
+   :src      "methods/mesh.clj"                  ; Clojure default → run + on-kse
+   :scale    1
+   :triggers [{:type :kse :topic "etzhayyim/actor/kakaku"}]
+   :requires #{:cap/kqe}}]
+
+ :kotoba.app/placement {:spread  :zone
+                        :require {:tier "edge"}}}

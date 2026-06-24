@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>kakaku 価格 — 価格差 / 需給 map</title>
+<!--
+  kakaku 価格 price-difference / supply-demand viewer (ADR-2605091200).
+  A BUYER price-transparency + supply-resilience surface, NEVER a trading signal
+  (kakaku G2). It shows where a product is cheaper (landed = price+shipping) across
+  merchants/regions and whether supply is tight — never a buy/sell call, no ads, no
+  affiliate (G3), no purchase nudge (G4).
+
+  SELF-CONTAINED: the payload is inlined at build time (build_viz_data.py replaces the
+  __PAYLOAD__ marker), so the page opens via file:// with zero external fetch. The math
+  is computed once in py/agent.py (single source of truth); this page only renders it.
+-->
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#0b0e14; color:#cdd6f4; font:13px/1.5 ui-sans-serif,system-ui,sans-serif; }
+  header { padding:12px 16px; border-bottom:1px solid #1e2330; }
+  h1 { font-size:16px; margin:0 0 2px; }
+  .sub { color:#7f8aa3; font-size:11px; }
+  main { padding:14px 16px; display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); }
+  .card { background:#11151f; border:1px solid #1e2330; border-radius:10px; padding:12px 14px; }
+  .card h2 { font-size:14px; margin:0 0 8px; }
+  .row { display:flex; align-items:center; gap:8px; margin:4px 0; }
+  .mlabel { flex:0 0 120px; color:#a6adc8; font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bar { height:14px; border-radius:4px; background:#89b4fa; }
+  .bar.dear { background:#585b70; }
+  .val { color:#cdd6f4; font-variant-numeric:tabular-nums; font-size:12px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600; }
+  .scarcity { background:#f38ba8; color:#1a0f14; }
+  .glut { background:#a6e3a1; color:#0f1a10; }
+  .balanced { background:#585b70; color:#cdd6f4; }
+  .spread { color:#f9e2af; }
+  .notable { color:#fab387; font-weight:600; }
+  .region { color:#7f8aa3; font-size:11px; }
+  .foot { padding:10px 16px; color:#585b70; font-size:11px; border-top:1px solid #1e2330; }
+</style>
+</head>
+<body>
+<header>
+  <h1>kakaku 価格 — 価格差 / 需給 map</h1>
+  <div class="sub" id="sub">buyer price-transparency + supply-resilience — never a trading signal (G2)</div>
+</header>
+<main id="cards"></main>
+<div class="foot" id="foot"></div>
+<script>
+  const PAYLOAD = /*__PAYLOAD__*/null;
+  function el(t, cls, txt){ const e=document.createElement(t); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e; }
+  function render(p){
+    const root = document.getElementById('cards');
+    if(!p || !p.cards || !p.cards.length){ root.appendChild(el('div','sub','(no data — run build_viz_data.py)')); return; }
+    for(const c of p.cards){
+      const card = el('div','card');
+      card.appendChild(el('h2', null, c.name || c.productId));
+      const sd = el('div','row');
+      sd.appendChild(el('span','mlabel','供給/需要'));
+      sd.appendChild(el('span','badge '+(c.reading||'balanced'), (c.reading||'balanced')+' ('+(c.supplyDemandIndex)+')'));
+      card.appendChild(sd);
+      const sp = el('div','row');
+      sp.appendChild(el('span','mlabel','価格差 spread'));
+      const spv = el('span', c.notable?'notable':'spread', c.spread+' ('+(Math.round((c.spreadFraction||0)*1000)/10)+'%)'+(c.notable?' ⚠ notable':''));
+      sp.appendChild(spv);
+      card.appendChild(sp);
+      const max = c.maxLanded || 1;
+      for(const o of c.offers){
+        const r = el('div','row');
+        const lab = el('span','mlabel', o.merchantId);
+        lab.appendChild(el('span','region',' '+o.region));
+        r.appendChild(lab);
+        const bar = el('div', 'bar'+(o.merchantId===c.cheapestMerchant?'':' dear'));
+        bar.style.width = Math.max(6, Math.round(180*o.landed/max))+'px';
+        r.appendChild(bar);
+        r.appendChild(el('span','val', String(o.landed)));
+        card.appendChild(r);
+      }
+      root.appendChild(card);
+    }
+  }
+  render(PAYLOAD);
+  document.getElementById('foot').textContent =
+    (PAYLOAD && PAYLOAD.generator ? PAYLOAD.generator+' · ' : '') +
+    'intent: ' + (PAYLOAD && PAYLOAD.intent ? PAYLOAD.intent : 'n/a') +
+    ' · no ads / no affiliate / no purchase nudge (G3/G4)';
+</script>
+</body>
+</html>
