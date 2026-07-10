@@ -1,2 +1,3 @@
 # kakaku 価格 — generated artifacts (regenerable; never committed). ADR-2605091200.
 data/kakaku.datoms.kotoba.edn
+.cpcache/
