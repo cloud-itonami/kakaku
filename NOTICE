@@ -9,5 +9,5 @@ the Apache License 2.0 and the Charter Compliance Rider.
 
 Mission Charter: ADR-2605192100
 Rider ADR: ADR-2605192200 + ADR-2606062100 + ADR-2606082400 (v3.1)
-Migrated from: etzhayyimcojp/20-actors 2026-05-21
+Migrated to the standalone west repository in 2026.
 (TRANSFORM batch, codemod pending)

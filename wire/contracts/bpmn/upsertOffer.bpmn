@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
+    id="Definitions_kakaku_upsert_offer"
+    targetNamespace="https://etzhayyim.ai/bpmn/kakaku"
+    exporter="hand-written"
+    exporterVersion="1.0">
+  <bpmn:process id="kakaku_upsert_offer" name="kakaku upsert offer" isExecutable="true">
+    <bpmn:startEvent id="Start" name="offer submitted">
+      <bpmn:outgoing>Flow_Upsert</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_Upsert" sourceRef="Start" targetRef="Task_Upsert"/>
+
+    <bpmn:serviceTask id="Task_Upsert" name="upsert offer">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="xrpc.com.etzhayyim.apps.kakaku.upsertOffer"/>
+        <zeebe:ioMapping>
+          <zeebe:output source="=status" target="status"/>
+          <zeebe:output source="=productId" target="productId"/>
+          <zeebe:output source="=productDid" target="productDid"/>
+          <zeebe:output source="=globalProductId" target="globalProductId"/>
+          <zeebe:output source="=globalProductDid" target="globalProductDid"/>
+          <zeebe:output source="=merchantId" target="merchantId"/>
+          <zeebe:output source="=merchantDid" target="merchantDid"/>
+          <zeebe:output source="=offerId" target="offerId"/>
+          <zeebe:output source="=offerDid" target="offerDid"/>
+          <zeebe:output source="=historyWritten" target="historyWritten"/>
+          <zeebe:output source="=matchCandidateCreated" target="matchCandidateCreated"/>
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Upsert</bpmn:incoming>
+      <bpmn:outgoing>Flow_End</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_End" sourceRef="Task_Upsert" targetRef="End"/>
+
+    <bpmn:endEvent id="End" name="offer upserted">
+      <bpmn:incoming>Flow_End</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+</bpmn:definitions>

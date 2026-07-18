@@ -1,0 +1,3 @@
+{:dependencies/version 1 :runtime #{:clojure :cljc :babashka}
+ :libraries [{:name cheshire :version "5.13.0" :purpose :json-wire}]
+ :deprecated #{:go :tinygo :python-parity :wasm-build} :go/artifacts []}

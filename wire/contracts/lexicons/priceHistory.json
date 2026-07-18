@@ -1,0 +1,35 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.priceHistory",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "properties": {
+          "historyId": { "type": "string" },
+          "productId": { "type": "string" },
+          "merchantId": { "type": "string" },
+          "offerId": { "type": "string" },
+          "price": { "type": "float" },
+          "shippingFee": { "type": "float" },
+          "totalPrice": { "type": "float" },
+          "currency": { "type": "string" },
+          "availability": { "type": "string" },
+          "sourceUrl": { "type": "string", "format": "uri" },
+          "observedAt": { "type": "string", "format": "datetime" },
+          "status": { "type": "string" }
+        },
+        "required": [
+          "productId",
+          "merchantId",
+          "offerId",
+          "price",
+          "totalPrice",
+          "currency",
+          "observedAt"
+        ]
+      }
+    }
+  }
+}

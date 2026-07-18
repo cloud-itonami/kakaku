@@ -1,0 +1,30 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.selectorRevision",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "properties": {
+          "revisionId": { "type": "string" },
+          "merchantId": { "type": "string" },
+          "selectorProfile": { "type": "string" },
+          "selectorVersion": { "type": "integer" },
+          "selectorConfig": { "type": "object" },
+          "rollout": { "type": "float" },
+          "isActive": { "type": "boolean" },
+          "reason": { "type": "string" },
+          "createdAt": { "type": "string", "format": "datetime" }
+        },
+        "required": [
+          "revisionId",
+          "merchantId",
+          "selectorVersion",
+          "selectorConfig",
+          "createdAt"
+        ]
+      }
+    }
+  }
+}

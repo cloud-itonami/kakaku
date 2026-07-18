@@ -1,0 +1,4 @@
+{:did "did:web:etzhayyim.github.io:com-etzhayyim-kakaku"
+ :handle "kakaku.etzhayyim.com" :ipns-key "kakaku-actor"
+ :graph-type "com.etzhayyim.kakaku.graph" :published "2026-07-18"
+ :bundle [["data" "data"] ["wire/identity/did.json" "did.json"] ["NOTICE" "NOTICE"]]}

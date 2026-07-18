@@ -1,0 +1,41 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.offer",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "properties": {
+          "offerId": { "type": "string" },
+          "did": { "type": "string" },
+          "productId": { "type": "string" },
+          "productDid": { "type": "string" },
+          "merchantId": { "type": "string" },
+          "merchantDid": { "type": "string" },
+          "merchantSku": { "type": "string" },
+          "nativeOfferId": { "type": "string" },
+          "price": { "type": "float" },
+          "shippingFee": { "type": "float" },
+          "totalPrice": { "type": "float" },
+          "currency": { "type": "string" },
+          "availability": { "type": "string" },
+          "deliveryEta": { "type": "string" },
+          "productUrl": { "type": "string", "format": "uri" },
+          "observedAt": { "type": "string", "format": "datetime" },
+          "status": { "type": "string" }
+        },
+        "required": [
+          "offerId",
+          "did",
+          "productId",
+          "merchantId",
+          "price",
+          "totalPrice",
+          "currency",
+          "observedAt"
+        ]
+      }
+    }
+  }
+}

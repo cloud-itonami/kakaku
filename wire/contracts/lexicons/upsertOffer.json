@@ -1,0 +1,73 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.upsertOffer",
+  "defs": {
+    "main": {
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "productId": { "type": "string" },
+            "name": { "type": "string" },
+            "brand": { "type": "string" },
+            "model": { "type": "string" },
+            "jan": { "type": "string" },
+            "gtin": { "type": "string" },
+            "mpn": { "type": "string" },
+            "packSize": { "type": "string" },
+            "category": { "type": "string" },
+            "merchantId": { "type": "string" },
+            "merchantName": { "type": "string" },
+            "domain": { "type": "string" },
+            "merchantSku": { "type": "string" },
+            "nativeOfferId": { "type": "string" },
+            "price": { "type": "float" },
+            "shippingFee": { "type": "float" },
+            "currency": { "type": "string" },
+            "availability": { "type": "string" },
+            "deliveryEta": { "type": "string" },
+            "productUrl": { "type": "string", "format": "uri" },
+            "observedAt": { "type": "string", "format": "datetime" }
+          },
+          "required": [
+            "merchantName",
+            "price",
+            "currency"
+          ]
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string" },
+            "productId": { "type": "string" },
+            "productDid": { "type": "string" },
+            "globalProductId": { "type": "string" },
+            "globalProductDid": { "type": "string" },
+            "merchantId": { "type": "string" },
+            "merchantDid": { "type": "string" },
+            "offerId": { "type": "string" },
+            "offerDid": { "type": "string" },
+            "historyWritten": { "type": "boolean" },
+            "matchCandidateCreated": { "type": "boolean" }
+          },
+          "required": [
+            "status",
+            "productId",
+            "productDid",
+            "merchantId",
+            "merchantDid",
+            "offerId",
+            "offerDid",
+            "historyWritten",
+            "matchCandidateCreated"
+          ]
+        }
+      }
+    }
+  }
+}

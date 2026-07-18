@@ -1,0 +1,28 @@
+{
+  "did": "did:web:etzhayyim.com:actor:kakaku",
+  "handle": "kakaku.etzhayyim.com",
+  "displayName": "Kakaku Price Comparison",
+  "description": "Price comparison actor for canonical products, merchant registry, cross-site offer ingest, lowest-price updates, and price history. Separates product identity from merchant-specific offers and time-series price observations. Uses path-based DID resolution for product, merchant, and offer entities.",
+  "avatar": "",
+  "banner": "",
+  "followersCount": 0,
+  "followsCount": 0,
+  "postsCount": 0,
+  "indexedAt": "2026-06-01T00:00:00.000Z",
+  "labels": [],
+  "viewer": {},
+  "performerType": "system",
+  "uiType": "appview",
+  "glyph": "Kakaku Price Comparison",
+  "displayNameJa": "Kakaku Price Comparison",
+  "_etzhayyim": {
+    "kind": "tier-b",
+    "tier": "B",
+    "status": "r0",
+    "adr": [],
+    "primaryLexicon": "com.etzhayyim.kakaku",
+    "primarySchema": null,
+    "didDocument": "https://etzhayyim.com/actor/kakaku/did.json",
+    "source": "kotoba"
+  }
+}

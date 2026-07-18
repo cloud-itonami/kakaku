@@ -1,0 +1,12 @@
+{:paths ["src" "test"] :deps {cheshire/cheshire {:mvn/version "5.13.0"}}
+ :tasks {test {:requires ([clojure.test] [kakaku.kotoba.test-ingest-mcp]
+                          [kakaku.methods.test-agent] [kakaku.methods.test-autorun]
+                          [kakaku.methods.test-ingest] [kakaku.methods.test-kakaku-edn]
+                          [kakaku.methods.test-pipeline-cid] [kakaku.murakumo-test]
+                          [kakaku.viz.test-build-viz])
+               :task (let [r (clojure.test/run-tests 'kakaku.kotoba.test-ingest-mcp
+                              'kakaku.methods.test-agent 'kakaku.methods.test-autorun
+                              'kakaku.methods.test-ingest 'kakaku.methods.test-kakaku-edn
+                              'kakaku.methods.test-pipeline-cid 'kakaku.murakumo-test
+                              'kakaku.viz.test-build-viz)]
+                       (when (pos? (+ (:fail r) (:error r))) (throw (ex-info "kakaku tests failed" r))) r)}}}

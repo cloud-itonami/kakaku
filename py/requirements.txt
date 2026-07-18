@@ -1,5 +1,0 @@
-# kakaku 価格 — langgraph WASM actor deps (ADR-2605091200)
-# LLM access is Murakumo-only via the kotoba host `llm` binding (127.0.0.1:4000);
-# no external LLM client is listed here by design (G5).
-langgraph>=0.2
-typing_extensions>=4.0

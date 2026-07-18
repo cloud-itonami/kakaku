@@ -1,0 +1,47 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.compareOffers",
+  "defs": {
+    "main": {
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "productId": { "type": "string" },
+            "productDid": { "type": "string" },
+            "limit": { "type": "integer" }
+          },
+          "required": [
+            "productId"
+          ]
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "productId": { "type": "string" },
+            "bestOverall": { "type": "object" },
+            "cheapest": { "type": "object" },
+            "fastest": { "type": "object" },
+            "offers": {
+              "type": "array",
+              "items": { "type": "object" }
+            },
+            "suspiciousOffers": {
+              "type": "array",
+              "items": { "type": "object" }
+            }
+          },
+          "required": [
+            "productId",
+            "offers"
+          ]
+        }
+      }
+    }
+  }
+}

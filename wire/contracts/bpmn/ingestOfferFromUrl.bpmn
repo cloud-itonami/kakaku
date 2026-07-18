@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
+    id="Definitions_kakaku_ingest_offer_from_url"
+    targetNamespace="https://etzhayyim.ai/bpmn/kakaku"
+    exporter="hand-written"
+    exporterVersion="1.0">
+  <bpmn:process id="kakaku_ingest_offer_from_url" name="kakaku ingest offer from URL" isExecutable="true">
+    <bpmn:startEvent id="Start" name="URL submitted">
+      <bpmn:outgoing>Flow_Fetch</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_Fetch" sourceRef="Start" targetRef="Task_Fetch"/>
+
+    <bpmn:serviceTask id="Task_Fetch" name="fetch product page">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="generic.http.fetch"/>
+        <zeebe:ioMapping>
+          <zeebe:input source="=string(productUrl)" target="url"/>
+          <zeebe:input source="=&quot;GET&quot;" target="method"/>
+          <zeebe:input source="=20" target="timeoutSec"/>
+          <zeebe:output source="=status" target="fetchStatus"/>
+          <zeebe:output source="=bodyText" target="fetchedBody"/>
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Fetch</bpmn:incoming>
+      <bpmn:outgoing>Flow_Ingest</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_Ingest" sourceRef="Task_Fetch" targetRef="Task_Ingest"/>
+
+    <bpmn:serviceTask id="Task_Ingest" name="extract and upsert offer">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="xrpc.com.etzhayyim.apps.kakaku.ingestOfferFromUrl"/>
+        <zeebe:ioMapping>
+          <zeebe:output source="=status" target="status"/>
+          <zeebe:output source="=fetchedTitle" target="fetchedTitle"/>
+          <zeebe:output source="=extractedName" target="extractedName"/>
+          <zeebe:output source="=extractedPrice" target="extractedPrice"/>
+          <zeebe:output source="=currency" target="currency"/>
+          <zeebe:output source="=availability" target="availability"/>
+          <zeebe:output source="=extractionMethod" target="extractionMethod"/>
+          <zeebe:output source="=barcodeSource" target="barcodeSource"/>
+          <zeebe:output source="=canonicalGtin14" target="canonicalGtin14"/>
+          <zeebe:output source="=productId" target="productId"/>
+          <zeebe:output source="=globalProductId" target="globalProductId"/>
+          <zeebe:output source="=globalProductDid" target="globalProductDid"/>
+          <zeebe:output source="=offerId" target="offerId"/>
+          <zeebe:output source="=offerDid" target="offerDid"/>
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Ingest</bpmn:incoming>
+      <bpmn:outgoing>Flow_End</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_End" sourceRef="Task_Ingest" targetRef="End"/>
+
+    <bpmn:endEvent id="End" name="offer ingested">
+      <bpmn:incoming>Flow_End</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+</bpmn:definitions>

@@ -1,0 +1,5 @@
+{:repository/version 1 :repository/path "orgs/etzhayyim/com-etzhayyim-kakaku"
+ :layout {:source "src" :tests "test" :data "data" :contracts "contracts" :docs "docs" :external-wire "wire"}
+ :canonical {:metadata "manifest.edn" :dependencies "dependencies.edn" :contracts "contracts/catalog.edn"}
+ :wire/formats #{:json :bpmn :html} :prohibited-runtimes #{:go :tinygo :python}
+ :prohibited-artifacts #{:shell-test-runner :legacy-jsonld-manifest :python-parity-test}}

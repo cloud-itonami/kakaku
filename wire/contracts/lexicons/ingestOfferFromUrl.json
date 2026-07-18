@@ -1,0 +1,72 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.ingestOfferFromUrl",
+  "defs": {
+    "main": {
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "productUrl": { "type": "string", "format": "uri" },
+            "merchantName": { "type": "string" },
+            "domain": { "type": "string" },
+            "productId": { "type": "string" },
+            "name": { "type": "string" },
+            "brand": { "type": "string" },
+            "model": { "type": "string" },
+            "jan": { "type": "string" },
+            "gtin": { "type": "string" },
+            "mpn": { "type": "string" },
+            "merchantSku": { "type": "string" },
+            "nativeOfferId": { "type": "string" },
+            "shippingFee": { "type": "float" },
+            "currency": { "type": "string" },
+            "availability": { "type": "string" },
+            "deliveryEta": { "type": "string" },
+            "llmModel": { "type": "string" }
+          },
+          "required": [
+            "productUrl",
+            "merchantName"
+          ]
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string" },
+            "fetchedTitle": { "type": "string" },
+            "extractedName": { "type": "string" },
+            "extractedPrice": { "type": "float" },
+            "currency": { "type": "string" },
+            "availability": { "type": "string" },
+            "extractionMethod": { "type": "string" },
+            "barcodeSource": { "type": "string" },
+            "canonicalGtin14": { "type": "string" },
+            "selectorProfile": { "type": "string" },
+            "selectedRevisionId": { "type": "string" },
+            "selectorVersion": { "type": "integer" },
+            "selectorRollout": { "type": "float" },
+            "selectorPath": { "type": "string" },
+            "rolloutBucket": { "type": "float" },
+            "productId": { "type": "string" },
+            "globalProductId": { "type": "string" },
+            "globalProductDid": { "type": "string" },
+            "offerId": { "type": "string" },
+            "offerDid": { "type": "string" }
+          },
+          "required": [
+            "status",
+            "productId",
+            "offerId",
+            "offerDid"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.matchCandidate",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "properties": {
+          "candidateId": { "type": "string" },
+          "did": { "type": "string" },
+          "sourceMerchantId": { "type": "string" },
+          "sourceMerchantDid": { "type": "string" },
+          "sourceSku": { "type": "string" },
+          "sourceUrl": { "type": "string", "format": "uri" },
+          "productId": { "type": "string" },
+          "productDid": { "type": "string" },
+          "confidence": { "type": "float" },
+          "reason": { "type": "string" },
+          "status": { "type": "string" },
+          "createdAt": { "type": "string", "format": "datetime" }
+        },
+        "required": [
+          "candidateId",
+          "did",
+          "sourceMerchantId",
+          "sourceSku",
+          "productId",
+          "confidence",
+          "status"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
+    id="Definitions_kakaku_compare_offers"
+    targetNamespace="https://etzhayyim.ai/bpmn/kakaku"
+    exporter="hand-written"
+    exporterVersion="1.0">
+  <bpmn:process id="kakaku_compare_offers" name="kakaku compare offers" isExecutable="true">
+    <bpmn:startEvent id="Start" name="compare requested">
+      <bpmn:outgoing>Flow_Compare</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_Compare" sourceRef="Start" targetRef="Task_Compare"/>
+
+    <bpmn:serviceTask id="Task_Compare" name="rank product offers">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="xrpc.com.etzhayyim.apps.kakaku.compareOffers"/>
+        <zeebe:ioMapping>
+          <zeebe:output source="=productId" target="productId"/>
+          <zeebe:output source="=bestOverall" target="bestOverall"/>
+          <zeebe:output source="=cheapest" target="cheapest"/>
+          <zeebe:output source="=fastest" target="fastest"/>
+          <zeebe:output source="=offers" target="offers"/>
+          <zeebe:output source="=suspiciousOffers" target="suspiciousOffers"/>
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Compare</bpmn:incoming>
+      <bpmn:outgoing>Flow_End</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_End" sourceRef="Task_Compare" targetRef="End"/>
+
+    <bpmn:endEvent id="End" name="offers ranked">
+      <bpmn:incoming>Flow_End</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+</bpmn:definitions>

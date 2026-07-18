@@ -1,0 +1,46 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.registerMerchant",
+  "defs": {
+    "main": {
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "merchantId": { "type": "string" },
+            "merchantName": { "type": "string" },
+            "domain": { "type": "string" },
+            "baseCurrency": { "type": "string" },
+            "shippingPolicy": { "type": "string" },
+            "reputationScore": { "type": "float" },
+            "selectorProfile": { "type": "string" },
+            "selectorConfig": { "type": "object" },
+            "selectorRollout": { "type": "float" },
+            "reason": { "type": "string" }
+          },
+          "required": [
+            "merchantName"
+          ]
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string" },
+            "merchantId": { "type": "string" },
+            "merchantDid": { "type": "string" }
+          },
+          "required": [
+            "status",
+            "merchantId",
+            "merchantDid"
+          ]
+        }
+      }
+    }
+  }
+}

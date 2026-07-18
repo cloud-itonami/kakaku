@@ -1,0 +1,32 @@
+{
+  "lexicon": 1,
+  "id": "com.etzhayyim.apps.kakaku.product",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string" },
+          "did": { "type": "string" },
+          "name": { "type": "string" },
+          "brand": { "type": "string" },
+          "model": { "type": "string" },
+          "jan": { "type": "string" },
+          "gtin": { "type": "string" },
+          "mpn": { "type": "string" },
+          "category": { "type": "string" },
+          "packSize": { "type": "string" },
+          "status": { "type": "string" },
+          "createdAt": { "type": "string", "format": "datetime" },
+          "updatedAt": { "type": "string", "format": "datetime" }
+        },
+        "required": [
+          "productId",
+          "did",
+          "name"
+        ]
+      }
+    }
+  }
+}

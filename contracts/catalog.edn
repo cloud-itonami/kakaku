@@ -1,0 +1,10 @@
+{:catalog/version 1 :catalog/canonical-format :edn :actor :kakaku
+ :local-lexicons [{:name :offer :canonical/path "contracts/lexicons/actor/offer.edn"}
+                  {:name :spread :canonical/path "contracts/lexicons/actor/spread.edn"}
+                  {:name :supply-demand :canonical/path "contracts/lexicons/actor/supplyDemand.edn"}]
+ :wire-lexicons [{:directory "contracts/lexicons/apps" :wire/directory "wire/contracts/lexicons" :count 16}]
+ :processes [{:name :compare-offers :wire/path "wire/contracts/bpmn/compareOffers.bpmn"}
+             {:name :ingest-offer-from-url :wire/path "wire/contracts/bpmn/ingestOfferFromUrl.bpmn"}
+             {:name :upsert-offer :wire/path "wire/contracts/bpmn/upsertOffer.bpmn"}]
+ :identity [{:kind :did-document :wire/path "wire/identity/did.json"}
+            {:kind :actor-profile :wire/path "wire/identity/profile.json"}]}
