@@ -11,7 +11,7 @@
   Murakumo `llm` host binding (tier 4 _llm_fill) is the omitted leg: as in the local-dev fallback
   (llm = None), the LLM fill never runs and the deterministic tiers stand alone."
   (:require [clojure.string :as str]
-            #?(:clj [cheshire.core :as json])))
+            [json.compat :as json]))
 
 ;; schema.org availability → kakaku enum
 (def AVAIL

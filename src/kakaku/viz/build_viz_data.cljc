@@ -12,7 +12,7 @@
   A BUYER price-transparency + supply-resilience surface, never a trading signal (kakaku G2)."
   (:require [clojure.string :as str]
             [kakaku.methods.agent :as agent]
-            #?(:clj [cheshire.core :as json])))
+            [json.compat :as json]))
 
 (defn- str-offer [o]
   {"merchantId" (get o "merchantId") "price" (get o "price") "shippingFee" (get o "shippingFee")
