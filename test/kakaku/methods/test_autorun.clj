@@ -7,6 +7,7 @@
   buy-sell/price-target attr; intent is buyer-transparency, reading is an observation); G5 every
   derived observation carries :sourcing :synthesized; append-only :db/add; frozen golden head-CID."
   (:require [clojure.test :refer [deftest is run-tests]]
+            [clojure.edn :as edn]
             [clojure.string :as str]
             [clojure.java.io :as io]
             [kakaku.methods.autorun :as autorun]
@@ -24,8 +25,19 @@
         (is (every? #(pos? (:datoms %)) (:beats res)) "every beat persists observations")
         (is (:ok (:chain res)) "commit-DAG verifies")
         (is (str/starts-with? (:head-cid res) "b") "head CID is content-addressed")
-        ;; spread is a price DIFFERENCE — a non-negative observation
-        (is (every? #(>= (:spread %) 0) (:beats res)) "spread is a non-negative price difference"))
+        ;; spread is a price DIFFERENCE — a non-negative observation. `>= 0` alone also passes
+        ;; on the all-zero output of an adapter that never reaches the seed, so pin it to the
+        ;; value the seed itself implies. The reachability assertion comes FIRST on purpose:
+        ;; behind the derivation it turns a broken adapter into an ArityException from
+        ;; (apply max '()) — a red that does not name its own reason.
+        (is (every? #(>= (:spread %) 0) (:beats res)) "spread is a non-negative price difference")
+        (let [offers (get (autorun/build-state (edn/read-string (slurp seed-path))) "offers")]
+          (is (pos? (count offers)) "the adapter reaches the seed's offers at all")
+          (when (seq offers)
+            (let [landed (map #(+ (long (get % "price" 0)) (long (get % "shippingFee" 0))) offers)
+                  expected (- (apply max landed) (apply min landed))]
+              (is (every? #(= expected (:spread %)) (:beats res))
+                  (str "spread equals the seed's own landed-price range (" expected ")"))))))
       (finally (.delete (io/file log))))))
 
 (deftest deterministic-resume-safe
@@ -44,10 +56,12 @@
         (is (= 2 (count (k/read-log log))) "two beats append")
         (is (= (get (second (k/read-log log)) ":tx/prev") (get (first (k/read-log log)) ":tx/cid"))
             "tx 2 links tx 1 (commit-DAG)")
-        ;; corrupt tx 1's stored CID directly (robust to whatever the seed's actual
-        ;; observation values are — a hardcoded magic price like "spread 700" silently
-        ;; no-ops and stops proving anything once the seed's offers/spread drift, which
-        ;; is exactly what happened here: the current seed's spread is 0, not 700)
+        ;; corrupt tx 1's stored CID directly, rather than editing an observed value: the
+        ;; tamper check should prove chain verification, not re-assert a price.
+        ;; The 2026-07-08 note here blamed seed drift ("spread is now 0, was 700"). That was
+        ;; wrong — the seed never changed and still yields 700. The adapter had stopped
+        ;; reaching it. A value that has collapsed to zero is something to diagnose, not a
+        ;; reason to rewrite the assertion that noticed it.
         (spit log (str/replace (slurp log) (:cid tx1) "bdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"))
         (is (false? (:ok (k/verify-chain log))) "tamper detected"))
       (finally (.delete (io/file log))))))
@@ -91,12 +105,13 @@
   (let [log (tmp)]
     (try
       (autorun/run-autonomous 3 seed-path log)
-      ;; re-captured 2026-07-08: the seed's offers for jan_4901777300443 changed since the
-      ;; old pin was captured (spread is now 0, was 700 — see append-only-and-tamper's
-      ;; former magic-number tamper check, same root cause), so the head-cid legitimately
-      ;; moved with it; re-verified stable via deterministic-resume-safe (2 independent
-      ;; runs over the same current seed agree).
-      (is (= "b826321f48ced928ed835931758ba7342bad9e5922805761afdab91d65ec2c145"
+      ;; A golden pins whatever it is shown, so re-pinning is only legitimate AFTER the new
+      ;; output has been examined and found correct — otherwise it freezes the regression.
+      ;; The 2026-07-08 re-pin did exactly that: it captured the head-cid of an adapter that
+      ;; was persisting all-zero observations and attributed the move to seed drift that had
+      ;; not happened. This value was re-captured once the observations were checked against
+      ;; the seed (spread 700, cheapest a_com, dearest b_com, 26 datoms per beat).
+      (is (= "be5e5aa20d120199328ddde2dd8a404267e91d250b3c12ed9c9b5162409e68b40"
              (k/head-cid log)) "head CID stays byte-stable (frozen golden value)")
       (finally (.delete (io/file log))))))
 
