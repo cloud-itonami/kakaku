@@ -10,7 +10,7 @@
   Pure-stdlib (re/json/html + a hand-rolled urllib.parse-equivalent for strip-affiliate). The
   Murakumo `llm` host binding (tier 4 _llm_fill) is the omitted leg: as in the local-dev fallback
   (llm = None), the LLM fill never runs and the deterministic tiers stand alone."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [json.compat :as json]))
 
 ;; schema.org availability → kakaku enum
@@ -39,7 +39,7 @@
     "unknown"
     (let [s (-> (str raw)
                 (str/replace #"https?://schema\.org/" "")
-                str/trim str/lower-case
+                str/trim str/lower
                 (str/replace "-" "") (str/replace " " ""))]
       (get AVAIL s "unknown"))))
 
@@ -56,7 +56,7 @@
                        (str/split query #"&"))
                   [])
           kept (filter (fn [[k _]]
-                         (let [kl (str/lower-case k)]
+                         (let [kl (str/lower k)]
                            (and (not (AFFILIATE-PARAMS kl))
                                 (not (some #(str/starts-with? kl %) AFFILIATE-PREFIXES)))))
                        pairs)
@@ -75,7 +75,7 @@
   [node]
   (cond
     (map? node)
-    (let [t (str/lower-case (str (get node "@type" "")))
+    (let [t (str/lower (str (get node "@type" "")))
           nm (get node "name")
           offers (get node "offers")
           cand (cond (map? offers) offers

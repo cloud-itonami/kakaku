@@ -18,7 +18,7 @@
   (file read, argv, stdout) at the #?(:clj) edge. argparse → a plain opts map in
   -main (no eval). Closed posture: the live ingest path is a G11 scaffold that
   returns a structured result rather than performing an outward write."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             #?(:clj [clojure.java.io :as io])))
 
 ;; ── seed path (Python `SEED = os.path.join(dirname(__file__), "seed.edn")`) ──

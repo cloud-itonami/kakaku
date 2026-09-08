@@ -12,7 +12,7 @@
   Classifier: `classify` splits the flat seed vector into products / merchants /
   offers / price-history with the agent-facing field names (string keys, exactly
   like kakaku_edn.py's dicts); `kw` strips a leading ':' off keyword values."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── reader (subset; same proven char-cursor reader as the *_edn family) ──────
 ;; Keywords keep the leading ':' (a string, not a Clojure keyword). Maps preserve

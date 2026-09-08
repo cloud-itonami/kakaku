@@ -16,7 +16,7 @@
   social post stay operator-gated (G11, no-server-key) — this loop does NO external I/O and reads a
   LOCAL snapshot only. Deterministic / resume-safe (cycle drives tx-id + as-of; observed-at is a
   fixed snapshot stamp → same cycles produce the same commit-DAG)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [kakaku.methods.agent :as agent]

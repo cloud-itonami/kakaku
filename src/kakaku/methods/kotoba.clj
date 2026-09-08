@@ -14,7 +14,7 @@
   Canonical CID form follows the family bar (D2.1): 'b' + sha256-hex over
   `json.dumps({\"prev\":…,\"datoms\":…}, sort_keys=True, separators=(',',':'))`-shape — byte-stable,
   string attrs, keys ':…' STRINGS. Self-contained EDN reader (no cross-actor dependency)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [clojure.java.io :as io]))
 
 (defn add [entity attr value] [":db/add" entity attr value])
