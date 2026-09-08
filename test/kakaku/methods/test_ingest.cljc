@@ -4,7 +4,7 @@
   source URLs are affiliate-stripped (G3), and the Murakumo LLM is a fallback only (G5; absent in
   the port → the deterministic tiers still work)."
   (:require [clojure.test :refer [deftest is]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [kakaku.methods.ingest :as ingest]))
 
 (def jsonld-page

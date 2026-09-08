@@ -10,7 +10,7 @@
   build-payload reads them directly; the only join it adds is merchant -> region.
 
   A BUYER price-transparency + supply-resilience surface, never a trading signal (kakaku G2)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [kakaku.methods.agent :as agent]
             [json.compat :as json]))
 

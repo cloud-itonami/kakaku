@@ -4,7 +4,7 @@
   rendered HTML inlines the payload (self-contained, file:// — no external fetch). Seed is read +
   classified via kakaku.methods.kakaku-edn (read-all/classify)."
   (:require [clojure.test :refer [deftest is]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.java.io :as io]
             [kakaku.methods.kakaku-edn :as edn]
             [kakaku.viz.build-viz-data :as b]))

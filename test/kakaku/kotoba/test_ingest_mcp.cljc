@@ -5,7 +5,7 @@
   committed `seed.edn`: 10 entities / ~72 datoms — the exact numbers the Python
   `--dry-run` prints). No CID parity here: ingest_mcp does NOT content-address
   (it is a textual seed scan, not the kotoba.datom commit-DAG)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [clojure.test :refer [deftest is]]
             [kakaku.kotoba.ingest-mcp :as mcp]))
 

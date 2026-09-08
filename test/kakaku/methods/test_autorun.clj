@@ -8,7 +8,7 @@
   derived observation carries :sourcing :synthesized; append-only :db/add; frozen golden head-CID."
   (:require [clojure.test :refer [deftest is run-tests]]
             [clojure.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.java.io :as io]
             [kakaku.methods.autorun :as autorun]
             [kakaku.methods.kotoba :as k]))
