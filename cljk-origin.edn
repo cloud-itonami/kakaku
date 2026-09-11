@@ -1,0 +1,22 @@
+{:format :kotoba.cljk-origin/v1
+ :renamed-on "2026-09-11"
+ :decision "adr-2609111500-cljk-rename-all-clojure-source (com-junkawasaki/root 90-docs/adr; owner instruction 2026-09-11)"
+ :rule "value = the extension the file had before the rename. A path ending in .clj.cljk or .cljs.cljk kept it in the name because both platform files existed (or the plain target was taken)."
+ :origins
+ {"src/kakaku/kotoba/ingest_mcp.cljk" ".cljc"
+  "src/kakaku/mesh.cljk" ".clj"
+  "src/kakaku/methods/agent.cljk" ".cljc"
+  "src/kakaku/methods/autorun.cljk" ".clj"
+  "src/kakaku/methods/ingest.cljk" ".cljc"
+  "src/kakaku/methods/kakaku_edn.cljk" ".cljc"
+  "src/kakaku/methods/kotoba.cljk" ".clj"
+  "src/kakaku/murakumo.cljk" ".cljc"
+  "src/kakaku/viz/build_viz_data.cljk" ".cljc"
+  "test/kakaku/kotoba/test_ingest_mcp.cljk" ".cljc"
+  "test/kakaku/methods/test_agent.cljk" ".cljc"
+  "test/kakaku/methods/test_autorun.cljk" ".clj"
+  "test/kakaku/methods/test_ingest.cljk" ".cljc"
+  "test/kakaku/methods/test_kakaku_edn.cljk" ".cljc"
+  "test/kakaku/methods/test_pipeline_cid.cljk" ".clj"
+  "test/kakaku/murakumo_test.cljk" ".cljc"
+  "test/kakaku/viz/test_build_viz.cljk" ".cljc"}}
