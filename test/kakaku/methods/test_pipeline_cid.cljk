@@ -1,4 +1,4 @@
-#!/usr/bin/env bb
+#!/usr/bin/env kbb
 ;; Cross-process END-TO-END pipeline-determinism guard for the kakaku price heartbeat.
 (ns kakaku.methods.test-pipeline-cid
   "test_pipeline_cid.clj — kakaku WHOLE-PIPELINE cross-process determinism (ADR-2605312345 /
