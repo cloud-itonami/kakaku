@@ -17,7 +17,7 @@
   LOCAL snapshot only. Deterministic / resume-safe (cycle drives tx-id + as-of; observed-at is a
   fixed snapshot stamp → same cycles produce the same commit-DAG)."
   (:require [kotoba.lang.text :as str]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.java.io :as io]
             [kakaku.methods.agent :as agent]
             [kakaku.methods.kotoba :as k]))
