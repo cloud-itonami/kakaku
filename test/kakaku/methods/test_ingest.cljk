@@ -3,7 +3,7 @@
   extraction (JSON-LD → selector → meta/regex) and the gates: live fetch is operator-gated (G11),
   source URLs are affiliate-stripped (G3), and the Murakumo LLM is a fallback only (G5; absent in
   the port → the deterministic tiers still work)."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kotoba.lang.text :as str]
             [kakaku.methods.ingest :as ingest]))
 

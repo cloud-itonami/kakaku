@@ -1,6 +1,6 @@
 (ns kakaku.methods.test-kakaku-edn
   "Tests for kakaku.methods.kakaku-edn (exact Python oracle outputs)."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kakaku.methods.kakaku-edn :as k]))
 
 (def seed

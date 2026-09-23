@@ -14,7 +14,7 @@
   (:require [kakaku.methods.autorun :as autorun]
             [clojure.java.io :as io]
             [clojure.java.shell :refer [sh]]
-            [clojure.test :refer [deftest is run-tests]]))
+            [kotoba.test :refer [deftest is run-tests]]))
 
 (def ^:private seed "contracts/kotoba/seed.edn")
 (defn- tmp-log [] (let [f (java.io.File/createTempFile "kak-log-" ".kotoba.edn")] (.delete f) (str f)))
