@@ -4,7 +4,7 @@
   be-true offers are flagged suspicious, never #1; arbitrage reports a buyer/resilience SPREAD,
   never a trade (G2); supply/demand is a bounded present-state index, not a forecast (G2); intel +
   social default to aggregate-first, no affiliate/nudge (G3/G4); live broadcast is operator-gated."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kakaku.methods.agent :as agent]))
 
 (def MERCHANTS
