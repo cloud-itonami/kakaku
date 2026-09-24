@@ -14,7 +14,7 @@
   Canonical CID form follows the family bar (D2.1): 'b' + sha256-hex over
   `json.dumps({\"prev\":…,\"datoms\":…}, sort_keys=True, separators=(',',':'))`-shape — byte-stable,
   string attrs, keys ':…' STRINGS. Self-contained EDN reader (no cross-actor dependency)."
-  (:require [kotoba.lang.text :as str]
+  (:require [kotoba.bytes.sha256 :as sha256] [kotoba.lang.text :as str]
             [kotoba.io :as io]))
 
 (defn add [entity attr value] [":db/add" entity attr value])
@@ -51,8 +51,7 @@
   (str "{\"datoms\":[" (str/join "," (map json-val datoms)) "],\"prev\":" (json-val prev-cid) "}"))
 
 (defn- sha256-hex [^String s]
-  (let [b (.digest (java.security.MessageDigest/getInstance "SHA-256") (.getBytes s "UTF-8"))]
-    (apply str (map #(format "%02x" (bit-and (int %) 0xff)) b))))
+  (sha256/sha256-hex s))
 
 (defn tx-cid
   ([datoms] (tx-cid datoms ""))

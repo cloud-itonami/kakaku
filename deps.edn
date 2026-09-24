@@ -1,5 +1,8 @@
 {:paths ["src"]
  :deps {
+        ;; kotoba.bytes.sha256 replaced java.security.MessageDigest here (2026-09-24).
+        ;; An explicit floor: tools.deps takes the NEWEST sha it is shown.
+        io.github.kotoba-lang/bytes {:git/sha "e28a3bb010f240451dd8be22b087c920633ec28d"}
         ;; kotoba.io replaced clojure.java.io here (2026-09-24). An explicit floor:
         ;; kotoba.io carries clojure.java.io's file/as-file/as-relative-path/
         ;; make-parents/delete-file from 98045c7, and tools.deps takes the NEWEST
