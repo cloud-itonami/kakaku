@@ -15,7 +15,7 @@
   `json.dumps({\"prev\":…,\"datoms\":…}, sort_keys=True, separators=(',',':'))`-shape — byte-stable,
   string attrs, keys ':…' STRINGS. Self-contained EDN reader (no cross-actor dependency)."
   (:require [kotoba.lang.text :as str]
-            [clojure.java.io :as io]))
+            [kotoba.io :as io]))
 
 (defn add [entity attr value] [":db/add" entity attr value])
 
@@ -110,12 +110,12 @@
 (defn parse-edn [s] (first (parse-step (vec (tokens s)) 0)))
 
 (def log-default
-  (-> (io/file *file*) .getParentFile .getParentFile (io/file "data" "kakaku.datoms.kotoba.edn") str))
+  (-> (io/file *file*) io/parent-file io/parent-file (io/file "data" "kakaku.datoms.kotoba.edn") str))
 
 (defn append-tx [tx log-path]
   (let [f (io/file log-path)]
-    (when-let [p (.getParentFile f)] (.mkdirs p))
-    (when-not (.exists f)
+    (when-let [p (io/parent-file f)] (io/mkdirs p))
+    (when-not (io/exists? f)
       (spit f (str ";; kakaku kotoba Datom log — append-only EAVT transactions (content-addressed "
                    "DAG). Price-difference + supply/demand OBSERVATIONS (:synthesized); never a "
                    "buy/sell signal or forecast (G2). DO NOT hand-edit. ADR-2605091200.\n")))
@@ -124,7 +124,7 @@
 
 (defn read-log [log-path]
   (let [f (io/file log-path)]
-    (if-not (.exists f) []
+    (if-not (io/exists? f) []
             (->> (str/split-lines (slurp f)) (map str/trim)
                  (remove #(or (empty? %) (str/starts-with? % ";"))) (mapv parse-edn)))))
 

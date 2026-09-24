@@ -18,7 +18,7 @@
   fixed snapshot stamp → same cycles produce the same commit-DAG)."
   (:require [kotoba.lang.text :as str]
             [kotoba.lang.edn :as edn]
-            [clojure.java.io :as io]
+            [kotoba.io :as io]
             [kakaku.methods.agent :as agent]
             [kakaku.methods.kotoba :as k]))
 
@@ -132,7 +132,7 @@
         cycles (Long/parseLong (str (opt "--cycles" "3")))
         seed-path (opt "--seed" seed-default)
         log-path (opt "--log" k/log-default)]
-    (when (and (flag? "--fresh") (.exists (io/file log-path))) (.delete (io/file log-path)))
+    (when (and (flag? "--fresh") (io/exists? (io/file log-path))) (io/delete (io/file log-path)))
     (let [res (run-autonomous cycles seed-path log-path)]
       (println "# kakaku — AUTONOMOUS price-difference / supply-demand over the kotoba Datom log "
                "(offline snapshot, LOCAL persist; live offer ingest + social post stay operator-gated)\n")
