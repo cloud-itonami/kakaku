@@ -13,7 +13,7 @@
   Run:  bb test"
   (:require [kakaku.methods.autorun :as autorun]
             [clojure.java.io :as io]
-            [clojure.java.shell :refer [sh]]
+            [kotoba.process :refer [sh]]
             [kotoba.test :refer [deftest is run-tests]]))
 
 (def ^:private seed "contracts/kotoba/seed.edn")

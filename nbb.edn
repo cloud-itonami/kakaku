@@ -4,6 +4,10 @@
 ;; repository. :deps only -- no :paths, so this file adds a dependency and
 ;; chooses no classpath.
 {:deps {
+        ;; kotoba.process replaced clojure.java.shell here (2026-09-24). An explicit
+        ;; floor: kotoba.process/sh parses clojure.java.shell's options from db49ea9,
+        ;; and tools.deps takes the NEWEST sha it is shown.
+        io.github.kotoba-lang/process {:git/sha "db49ea936e53d0bc698be0db79bf96ad86b5f7d0"}
         ;; kotoba.test (clojure.test-compatible surface), not clojure.test --
         ;; scripts/migrate-clojure-test-to-kotoba-test.cljk. Explicit floor.
         io.github.kotoba-lang/test {:git/url "https://github.com/kotoba-lang/test.git"
