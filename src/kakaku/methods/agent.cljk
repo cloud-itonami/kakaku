@@ -28,7 +28,7 @@
 (def SOCIAL-WEEKLY-CEILING 100)
 ;; A spread at/above this fraction of the cheapest landed price is "notable" for intel.
 (def NOTABLE-SPREAD-FRACTION 0.15)
-;; Trust/availability weights for best-overall ranking (CLAUDE.md "Ranking Rules").
+;; Trust/availability weights for best-overall ranking (AGENTS.md "Ranking Rules").
 (def AVAILABILITY-RANK {"in-stock" 2 "preorder" 1 "backorder" 0 "out-of-stock" -2 "unknown" -1})
 
 (defn landed-price
